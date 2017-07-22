@@ -1,4 +1,3 @@
-# MVC-framework
 简单 Java Web 框架
 支持IOC、AOP、MVC功能：
 
