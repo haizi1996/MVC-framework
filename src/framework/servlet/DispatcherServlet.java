@@ -37,10 +37,9 @@ public class DispatcherServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
 		super.init(config);
-		Properties prop = PropsUtil.loadProps("default.properties");
-		ClassScanner.getClassSet(prop.getProperty("APP_BASE_PACKAGE"));
 		ServletContext servletContext = config.getServletContext();
 		UploadHelper.init(servletContext);
+		LoadFrame.init();
 	}
 
 	@Override
