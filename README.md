@@ -7,4 +7,6 @@ AOP：支持Aspect注解，使用cglib动态代理，支持切面排序；
 
 MVC：支持Controller、RequestMapping、ResponseBody注解，支持普通参数，Model参数,简单JavaBean，支持JSP、JSON视图解析。
 
-支持文件上传，需要在方法中手动调用，上传工具类的方法，可以灵活控制子目录
+支持文件上传，需要在方法中手动调用，上传工具类的方法，可以灵活控制子目录\
+
+添加静态资源映射 dom4j解析conf/web.xml下的MimeType，根据文件后缀名获取响应头
