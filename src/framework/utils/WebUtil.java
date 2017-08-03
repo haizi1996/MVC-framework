@@ -170,5 +170,42 @@ public class WebUtil {
 		String encodeType = ConfigHelper.getEncode();
 		response.setContentType(contentType + ";charset=" + encodeType);
 	}
+	
+	
+	/**
+	 * 请求静态资源
+	 * @throws IOException 
+	 */
+	public static void sendResources(HttpServletRequest request, HttpServletResponse response, String responsePath) throws IOException {
+		ServletContext context = request.getServletContext();
+		String inputPath = context.getRealPath(responsePath);
+		InputStream input = context.getResourceAsStream(responsePath);
+		Reader reader = new FileReader(inputPath);
+		BufferedReader buffer = new BufferedReader(reader);
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType(MimeType.getMemiTypeByFileName(responsePath));
+		PrintWriter writer = null;
+		try {
+			writer = response.getWriter();
+			String str = null;
+			while((str = buffer.readLine()) != null) {
+				writer.println(str);
+			}
+			writer.flush();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(writer != null) {
+				writer.close();
+			}
+			if(input != null) {
+				input.close();
+			}
+			if(buffer != null) {
+				buffer.close();
+			}
+		}
+	}
 
 }
