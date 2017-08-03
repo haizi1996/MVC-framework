@@ -1,7 +1,6 @@
 package framework.servlet;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -11,11 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import framework.core.ClassScanner;
+import framework.core.LoadFrame;
 import framework.core.ObjectFactory;
 import framework.mvc.Handler;
 import framework.mvc.bean.Model;
-import framework.utils.PropsUtil;
 import framework.utils.WebUtil;
 
 @WebServlet(urlPatterns = "/", loadOnStartup = 0)
@@ -38,6 +36,7 @@ public class DispatcherServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		super.init(config);
 		ServletContext servletContext = config.getServletContext();
+		MimeType.init(servletContext.getRealPath(""));
 		UploadHelper.init(servletContext);
 		LoadFrame.init();
 	}
@@ -51,11 +50,12 @@ public class DispatcherServlet extends HttpServlet {
 		if (requestPath.endsWith("/")) {
 			requestPath = requestPath.substring(0, requestPath.length() - 1);
 		}
+		
 		// 静态资源处理
 		if (resourceHandler != null) {
 			String responsePath = resourceHandler.handleRequest(requestPath);
 			if (responsePath != null) {
-				request.getRequestDispatcher(responsePath).forward(request, response);
+				WebUtil.sendResources(request,response,responsePath);
 				return;
 			}
 		}
