@@ -22,12 +22,12 @@ public class IocHelper {
                 // 获取 Bean 类与 Bean 实例
                 Class<?> beanClass = beanEntry.getKey();
                 Object beanInstance = beanEntry.getValue();
-                // 获取 Bean 类中所有的字段（不包括父类中的方法）
+                // 获取 Bean 类中所有的字段（不包括父类中的属性）
                 Field[] beanFields = beanClass.getDeclaredFields();
                 if (ArrayUtils.isNotEmpty(beanFields)) {
                     // 遍历所有的 Bean 字段
                     for (Field beanField : beanFields) {
-                        // 判断当前 Bean 字段是否带有 Inject 注解
+                        // 判断当前 Bean 字段是否带有 AutoWare 注解
                         if (beanField.isAnnotationPresent(AutoWare.class)) {
                             // 获取 Bean 字段对应的接口
                             Class<?> interfaceClass = beanField.getType();
