@@ -7,12 +7,31 @@ import javax.sql.DataSource;
 
 import framework.core.ObjectFactory;
 import framework.dataSource.ConnectionPool;
+import framework.dataSource.DataSourceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * 数据库辅助类
+ * @author hailin
+ */
 public class DatabaseHelper {
 
-	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
 
-	private static DataSource dataSource;
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseHelper.class);
+
+    /**
+     * 定义一个局部线程变量（使每个线程都拥有自己的连接）
+     */
+	private static ThreadLocal<Connection> connContainer = new ThreadLocal<Connection>();
+
+    /**
+     * 获取数据源工厂
+     */
+    private static final DataSourceFactory dataSourceFactory = ObjectFactory.getDataSourceFactory();
+
+
+    private static DataSource dataSource;
 
 	static {
 		dataSource = ObjectFactory.getDataSource();
@@ -22,11 +41,11 @@ public class DatabaseHelper {
 	}
 
 	public static Connection getConnection() {
-		Connection conn = threadLocal.get();
+		Connection conn = connContainer.get();
 		if (conn == null) {
 			try {
 				conn = dataSource.getConnection();
-				threadLocal.set(conn);
+				connContainer.set(conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
@@ -45,7 +64,7 @@ public class DatabaseHelper {
 			e.printStackTrace();
 			throw new RuntimeException("开启事务出错");
 		} finally {
-			threadLocal.set(conn);
+			connContainer.set(conn);
 		}
 	}
 	/**
@@ -56,7 +75,7 @@ public class DatabaseHelper {
 		try {
 			if (conn == null) {
 				conn = dataSource.getConnection();
-				threadLocal.set(conn);
+				connContainer.set(conn);
 			}
 			conn.commit();
 			conn.close();
@@ -64,7 +83,7 @@ public class DatabaseHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			threadLocal.remove();
+			connContainer.remove();
 		}
 	}
 
@@ -72,7 +91,7 @@ public class DatabaseHelper {
 	 * 执行回滚
 	 */
 	public static void rollbackTransaction() {
-		Connection conn = threadLocal.get();
+		Connection conn = connContainer.get();
 		if (conn != null) {
 			try {
 				conn.rollback();
@@ -81,7 +100,7 @@ public class DatabaseHelper {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
-				threadLocal.remove();
+				connContainer.remove();
 			}
 		}
 	}

@@ -119,5 +119,11 @@ public class ConfigHelper {
 		return PropsUtil.getString(prop, Config.DATASOURCE);
 	}
 
+	/**
+	 * 获取 String 类型的属性值
+	 */
+	public static String getString(String key) {
+		return PropsUtil.getString(prop, key);
+	}
 	
 }
