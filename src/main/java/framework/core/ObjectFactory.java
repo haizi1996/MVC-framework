@@ -13,6 +13,7 @@ import framework.helper.ConfigHelper;
 import framework.servlet.AbstractResourceHandler;
 import framework.servlet.ConcreteResourceHandler;
 import framework.utils.ClassUtil;
+import framework.utils.Config;
 import framework.utils.ObjectUtil;
 import framework.utils.ReflectionUtil;
 import framework.utils.StringUtil;
@@ -21,10 +22,7 @@ public class ObjectFactory {
 	
 	private static Map<String,Object> cache = new ConcurrentHashMap<String,Object>();
 
-	/**
-	 * DataSourceFactory
-	 */
-	private static final String DS_FACTORY = "my.framework.custom.ds_factory";
+
 	@SuppressWarnings("unchecked")
 	public static <T> T getObject(Class<T> clazz) {
 		if(cache.containsKey(clazz.getName())) {
@@ -90,7 +88,7 @@ public class ObjectFactory {
 	 * 获取 DataSourceFactory
 	 */
 	public static DataSourceFactory getDataSourceFactory() {
-		return getInstance(DS_FACTORY, DefaultDataSourceFactory.class);
+		return getInstance(Config.DS_FACTORY, DefaultDataSourceFactory.class);
 	}
 
 	@SuppressWarnings("unchecked")

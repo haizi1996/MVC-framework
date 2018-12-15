@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.collections4.CollectionUtils;
 
 import framework.annotation.Aspect;
 import framework.annotation.Service;
@@ -18,6 +17,7 @@ import framework.aop.ProxyFactory;
 import framework.core.ClassHelper;
 import framework.tx.TranscationProxy;
 import framework.utils.BeanUtil;
+import org.apache.commons.collections.CollectionUtils;
 
 public class AopHelper {
 
@@ -48,7 +48,7 @@ public class AopHelper {
 	/**
 	 * 排序代理类
 	 * 
-	 * @param targetMap
+	 * @param proxyClass
 	 */
 	private static void sortProxyList(List<Class<?>> proxyClass) {
 		if (CollectionUtils.isEmpty(proxyClass)) {

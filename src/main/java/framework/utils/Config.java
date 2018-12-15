@@ -35,4 +35,9 @@ public interface Config {
 	String UPLOAD_LIMIT="UPLOAD_LIMIT";
 	//网站的编码
 	String ENCODE = "UTF-8";
+
+	/**
+	 * DataSourceFactory
+	 */
+	String DS_FACTORY = "my.framework.custom.ds_factory";
 }
